@@ -1,0 +1,24 @@
+{
+  "name": "short_url",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/yashraghuwa-prog/short_url#readme",
+  "bugs": {
+    "url": "https://github.com/yashraghuwa-prog/short_url/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yashraghuwa-prog/short_url.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.8.1"
+  }
+}
