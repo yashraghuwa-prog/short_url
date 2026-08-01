@@ -10,8 +10,24 @@ connecttomongodb("mongodb://localhost:27017/short_url").then(()=>{
 });
 
 app.use(express.json());
+
+app.get('/test',async (req,res)=>{
+    const allurls=await url.find({});
+    return res.end(`
+        <html>
+         <head></head>
+         <body>
+           <ol>
+           ${allurls.map(url=>`<li>${url.shortid}-${url.redirecturl}-${url.visithistory.length}</li>`).join("")}
+           </ol>
+        </html>
+        `);
+});
+
+
 app.use("/url",urlroute);
- app.get("/:shortid",async (req,res)=>{
+
+ app.get("/url/:shortid",async (req,res)=>{
     const shortid =req.params.shortid;
    const entry = await url.findOneAndUpdate({
         shortid
