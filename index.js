@@ -2,9 +2,13 @@ const express=require("express");
 const {connecttomongodb}=require("./connect")
 const urlroute=require("./routes/url");
 const path=require("path")
-const url=require('./models/url');
+
 const app=express();
+
+const url=require('./models/url');
 const staticroute=require('./routes/staticrouter');
+const userroute=require("./routes/user");
+
 const PORT=8001;
 
 connecttomongodb("mongodb://localhost:27017/short_url").then(()=>{
@@ -26,6 +30,7 @@ app.get('/test',async (req,res)=>{
 });
 
 app.use("/",staticroute)
+app.use("/user",userroute);
 app.use("/url",urlroute);
 
  app.get("/url/:shortid",async (req,res)=>{
