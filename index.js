@@ -12,7 +12,7 @@ const userroute=require("./routes/user");
 const PORT=8001;
 
 connecttomongodb("mongodb://localhost:27017/short_url").then(()=>{
-    console.log("mongodb connected")
+    console.log("mongodb connected");
 });
 
 app.set("view engine","ejs");
@@ -29,8 +29,8 @@ app.get('/test',async (req,res)=>{
 
 });
 
-app.use("/",staticroute)
-app.use("/user",userroute);
+app.use("/signup",staticroute)
+app.use("/",userroute);
 app.use("/url",urlroute);
 
  app.get("/url/:shortid",async (req,res)=>{
