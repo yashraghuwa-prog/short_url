@@ -29,8 +29,10 @@ app.get('/test',async (req,res)=>{
 
 });
 
-app.use("/signup",staticroute)
-app.use("/",userroute);
+
+app.use("/", staticroute);
+app.use("/user", userroute);
+app.use("/url", urlroute);
 app.use("/url",urlroute);
 
  app.get("/url/:shortid",async (req,res)=>{
