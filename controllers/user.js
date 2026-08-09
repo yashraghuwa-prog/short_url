@@ -1,5 +1,6 @@
 const user=require('../models/user')
 
+
 async function handleusersignup(req,res) {
     const{name,email,password}=req.body;
     await user.create({
@@ -21,6 +22,8 @@ async function handleuserlogin(req,res) {
     if(!user) return res.render('login',{
         error:'invalid username or password',
     })
+    const sessionid=uuidv4();
+
     return res.render("home");
 }
 
