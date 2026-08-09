@@ -15,16 +15,16 @@ async function handleusersignup(req, res) {
 }
 
 async function handleuserlogin(req, res) {
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
 
     const user = await User.findOne({
-        name,
         email,
+        password,
     });
 
     if (!user) {
-        return res.render('login', {
-            error: 'invalid username or password',
+        return res.render("login", {
+            error: "Invalid email or password",
         });
     }
 
@@ -34,8 +34,9 @@ async function handleuserlogin(req, res) {
 
     res.cookie("uid", sessionid);
 
-    return res.render("home");
+    return res.redirect("/");
 }
+
 
 module.exports = {
     handleusersignup,

@@ -3,23 +3,30 @@
 <head>
     <style>
         body {
-            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>signup</title>
+    <title>Signup</title>
 </head>
+
 <body>
-    <h1>signup</h1>
-    <form action="/user" method="post">
-        <label >Full name</label>
-        <input type="text" required name="name"/>
-        <label >email</label>
-        <input type="text" required name="name"/>
-        <label >password</label>
-        <input type="text" required name="name"/>
-        <button type="submit">signup</button>
+    <h1>Signup</h1>
+
+    <form action="/user/signup" method="POST">
+
+        <label>Full name</label>
+        <input type="text" required name="name">
+
+        <label>Email</label>
+        <input type="email" required name="email">
+
+        <label>Password</label>
+        <input type="password" required name="password">
+
+        <button type="submit">Signup</button>
+
     </form>
 </body>
 </html>

@@ -1,54 +1,56 @@
-const express=require("express");
-const {connecttomongodb}=require("./connect")
-const urlroute=require("./routes/url");
-const path=require("path")
+const express = require("express");
+const { connecttomongodb } = require("./connect");
+const { restricttologgeduseronly ,checkauth} = require("../short_url/middleware/auth");
+const urlroute = require("./routes/url");
+const path = require("path");
+const cookieParser = require("cookie-parser");
 
-const app=express();
+const app = express();
 
-const url=require('./models/url');
-const staticroute=require('./routes/staticrouter');
-const userroute=require("./routes/user");
+const url = require("./models/url");
+const staticroute = require("./routes/staticrouter");
+const userroute = require("./routes/user");
 
-const PORT=8001;
+const PORT = 8001;
 
-connecttomongodb("mongodb://localhost:27017/short_url").then(()=>{
+connecttomongodb("mongodb://localhost:27017/short_url").then(() => {
     console.log("mongodb connected");
 });
 
-app.set("view engine","ejs");
-app.set('views',path.resolve("./views"));
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
 
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
-app.get('/test',async (req,res)=>{
-    const allurls=await url.find({});
-    return res.render('home',{
-        urls:allurls,
+app.get("/test", async (req, res) => {
+    const allurls = await url.find({});
+
+    return res.render("home", {
+        urls: allurls,
     });
-
 });
-
-
-app.use("/", staticroute);
+app.use("/", checkauth,staticroute);
 app.use("/user", userroute);
-app.use("/url", urlroute);
-app.use("/url",urlroute);
+app.use("/url", restricttologgeduseronly, urlroute);
 
- app.get("/url/:shortid",async (req,res)=>{
-    const shortid =req.params.shortid;
-   const entry = await url.findOneAndUpdate({
-        shortid
-    },{$push:{
-        visithistory:{
-            timestamp:Date.now(),
+app.get("/url/:shortid", async (req, res) => {
+    const shortid = req.params.shortid;
+
+    const entry = await url.findOneAndUpdate(
+        {
+            shortid,
+        },
+        {
+            $push: {
+                visithistory: {
+                    timestamp: Date.now(),
+                },
+            },
         }
-    },
-  }
-);
-res.redirect(entry.redirecturl);
+    );
+
+    res.redirect(entry.redirecturl);
 });
-const mongoose=require("mongoose");
-
-
-app.listen(PORT,()=>console.log(`server started at port: ${PORT}`));
+app.listen(PORT, () => console.log(`server started at port: ${PORT}`));
