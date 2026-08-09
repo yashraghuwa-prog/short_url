@@ -1,33 +1,43 @@
-const user=require('../models/user')
+const User = require('../models/user');
+const { v4: uuidv4 } = require("uuid");
+const { setuser } = require('../service/auth');
 
+async function handleusersignup(req, res) {
+    const { name, email, password } = req.body;
 
-async function handleusersignup(req,res) {
-    const{name,email,password}=req.body;
-    await user.create({
+    await User.create({
         name,
         email,
         password,
     });
+
     return res.render("home");
 }
 
-async function handleuserlogin(req,res) {
-    const{name,email,password}=req.body;
+async function handleuserlogin(req, res) {
+    const { name, email, password } = req.body;
 
-    const user = await user.findOne({
-
+    const user = await User.findOne({
         name,
         email,
     });
-    if(!user) return res.render('login',{
-        error:'invalid username or password',
-    })
-    const sessionid=uuidv4();
+
+    if (!user) {
+        return res.render('login', {
+            error: 'invalid username or password',
+        });
+    }
+
+    const sessionid = uuidv4();
+
+    setuser(sessionid, user);
+
+    res.cookie("uid", sessionid);
 
     return res.render("home");
 }
 
-module.exports={
+module.exports = {
     handleusersignup,
     handleuserlogin,
-}
+};
