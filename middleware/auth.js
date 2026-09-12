@@ -1,31 +1,43 @@
-const {getuser}=require("../service/auth");
+const { getuser } = require("../service/auth");
 
-async function restricttologgeduseronly(req,res,next) {
-    const userid =req.headers["Authorization"];
+function restricttologgeduseronly(req, res, next) {
+    const authHeader = req.headers["authorization"];
 
-    console.log(req);
+    if (!authHeader) {
+        return res.redirect("/login");
+    }
 
-    if(!userid) return res.redirect("/login");
-    const token =userid.split('Bearer')[0]
-    const user=getuser(userid);
+    const token = authHeader.split(" ")[1];
 
-    if(!user) return res.redirect("/login");
+    const user = getuser(token);
 
+    if (!user) {
+        return res.redirect("/login");
+    }
 
-    req.user=user;
+    req.user = user;
+
     next();
 }
 
-async function checkauth(req,res,next) {
-    const userid =req.cookies?.uid;
-    const user=getuser(userid);
+function checkauth(req, res, next) {
+    const authHeader = req.headers["authorization"];
 
+    if (!authHeader) {
+        req.user = null;
+        return next();
+    }
 
-    req.user=user;
+    const token = authHeader.split(" ")[1];
+
+    const user = getuser(token);
+
+    req.user = user || null;
+
     next();
 }
 
-module.exports={
+module.exports = {
     restricttologgeduseronly,
     checkauth,
-}
+};
