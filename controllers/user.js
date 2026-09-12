@@ -34,7 +34,7 @@ async function handleuserlogin(req, res) {
 
     // res.cookie("uid", sessionid);
 
-    return res.json({token});
+    return res.json({token:sessionid});
 }
 
 
