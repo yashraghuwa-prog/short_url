@@ -1,6 +1,6 @@
 const express = require("express");
 const { connecttomongodb } = require("./connect");
-const { restricttologgeduseronly ,checkauth} = require("../short_url/middleware/auth");
+const { checkforauthentication,restrictTO} = require("../short_url/middleware/auth");
 const urlroute = require("./routes/url");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -23,6 +23,7 @@ app.set("views", path.resolve("./views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(checkforauthentication);
 
 app.get("/test", async (req, res) => {
     const allurls = await url.find({});
@@ -31,9 +32,9 @@ app.get("/test", async (req, res) => {
         urls: allurls,
     });
 });
-app.use("/", checkauth,staticroute);
+app.use("/url", restrictTO(["NORMAL"]),urlroute);
 app.use("/user", userroute);
-app.use("/url", restricttologgeduseronly, urlroute);
+app.use("/", staticroute);
 
 app.get("/url/:shortid", async (req, res) => {
     const shortid = req.params.shortid;

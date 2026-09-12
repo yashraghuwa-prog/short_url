@@ -28,13 +28,9 @@ async function handleuserlogin(req, res) {
         });
     }
 
-    const sessionid = uuidv4();
-
-    setuser(sessionid, user);
-
-    // res.cookie("uid", sessionid);
-
-    return res.json({token:sessionid});
+    const token=setuser(user);
+    res.cookie("uid", token);
+    return res.redirect("/");
 }
 
 

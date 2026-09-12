@@ -1,10 +1,10 @@
 const express = require("express");
 const URL = require("../models/url");
-const { restricttologgeduseronly } = require("../middleware/auth");
+const { restrictTO } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/", restricttologgeduseronly, async (req, res) => {
+router.get("/", restrictTO(["NORMAL"]), async (req, res) => {
 
     const allurls = await URL.find({
         createdBy: req.user._id
