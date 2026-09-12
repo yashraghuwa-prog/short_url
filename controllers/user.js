@@ -32,9 +32,9 @@ async function handleuserlogin(req, res) {
 
     setuser(sessionid, user);
 
-    res.cookie("uid", sessionid);
+    // res.cookie("uid", sessionid);
 
-    return res.redirect("/");
+    return res.json({token});
 }
 
 
