@@ -32,7 +32,7 @@ app.get("/test", async (req, res) => {
         urls: allurls,
     });
 });
-app.use("/url", restrictTO(["NORMAL"]),urlroute);
+app.use("/url", restrictTO(["NORMAL","ADMIN"]),urlroute);
 app.use("/user", userroute);
 app.use("/", staticroute);
 
